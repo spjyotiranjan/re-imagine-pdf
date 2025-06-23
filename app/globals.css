@@ -1,0 +1,128 @@
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+
+:root {
+  --background: #ffffff;
+  --foreground: #ffffff;
+}
+
+@layer base {
+  :root {
+    /* 🌿 Primary Colors */
+    --color-primary: #1F7C51;
+    --color-primary-dark: #155C3B;
+    --color-primary-light: #D8F0E1;
+
+    /* ⚪ Grayscale */
+    --color-gray-50: #F9FAFB;
+    --color-gray-100: #F3F4F6;
+    --color-gray-200: #E5E7EB;
+    --color-gray-300: #D1D5DB;
+    --color-gray-400: #9CA3AF;
+    --color-gray-500: #6B7280;
+    --color-gray-600: #4B5563;
+    --color-gray-700: #374151;
+    --color-gray-800: #1F2937;
+    --color-gray-900: #111827;
+
+    /* 🎨 Accent Colors */
+    --color-accent-red: #FF5A5F;
+    --color-accent-yellow: #FBBF24;
+    --color-accent-blue: #3B82F6;
+    --color-accent-purple: #8B5CF6;
+    --color-accent-green: #10B981;
+
+    /* 🖋 Font Sizes */
+    --text-xs: 0.75rem;
+    --text-sm: 0.875rem;
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.25rem;
+    --text-2xl: 1.5rem;
+    --text-3xl: 1.875rem;
+
+    /* 🔘 Radius */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+
+
+    /* ⬛ Shadows */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
+  }
+}
+
+@layer components {
+  .gray-container{
+    @apply bg-gray-100 rounded-xl;
+  }
+  .navbar {
+    @apply flex items-center justify-between px-15 py-5 w-full mb-3;
+  }
+  .navbar-right {
+    @apply flex items-center gap-4;
+  }
+  .side-nav{
+    @apply flex flex-col gap-4 px-15 py-5 h-full w-1/4;
+  }
+  .card {
+    @apply bg-white rounded-[var(--radius-md)] shadow-md p-6;
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: white;
+    border-radius: var(--radius-md);
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: background 0.3s ease;
+  }
+  .btn-primary:hover {
+    background-color: var(--color-primary-dark);
+  }
+
+  .tag-green {
+    background-color: var(--color-accent-green);
+    color: white;
+    font-size: var(--text-xs);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-full);
+  }
+
+  .text-muted {
+    color: var(--color-gray-500);
+    font-size: var(--text-sm);
+  }
+
+  .text-heading {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    color: var(--color-gray-800);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #ededed;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
