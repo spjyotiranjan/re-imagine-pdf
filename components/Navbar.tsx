@@ -1,7 +1,8 @@
 import React from 'react';
-import {auth, signIn, signOut} from "@/auth";
+import {auth, signOut} from "@/auth";
 import Image from "next/image";
 import Link from "next/link";
+import {User} from "lucide-react";
 
 const Navbar = async () => {
     const session = await auth();
@@ -21,8 +22,13 @@ const Navbar = async () => {
                         </form>
 
                         <div className={"navbar-right"}>
-                            <Image src={session?.user?.image as string} alt={"User Logo"} width={50} height={50}
-                                   className={"rounded-full"}/>
+                            {session?.user?.image ? (<Image src={session?.user?.image as string || ""} alt={"User Logo"} width={50} height={50}
+                                                            className={"rounded-full"}/>):
+                                (<div className={"rounded-full w-[50px] h-[50px] bg-gray-200 flex justify-center items-center"}>
+                                    <User />
+                                </div>)
+                            }
+
                             <div className={"flex-col justify-between"}>
                                 <p className={"text-black font-medium "}>{session?.user?.name}</p>
                                 <p className={"text-gray-500 text-sm font-extralight"}>{session?.user?.email}</p>
@@ -31,15 +37,16 @@ const Navbar = async () => {
                     </div>
 
                 ) : (
-                    <form className={'cursor-pointer'} action={async () => {
-                        "use server"
-                        await signIn("google")
-                    }}>
-                        <button className={"cursor-pointer flex justify-center items-center text-black"}
-                                type={"submit"}>
-                            <span>Login</span>
-                        </button>
-                    </form>
+                    // <form className={'cursor-pointer'} action={async () => {
+                    //     "use server"
+                    //     signIn("google")
+                    // }}>
+                    //     <button className={"cursor-pointer flex justify-center items-center text-black"}
+                    //             type={"submit"}>
+                    //         <span>Login</span>
+                    //     </button>
+                    // </form>
+                    <Link className={"text-black"} href={"/login"}>Login</Link>
                 )}
             </div>
         </div>

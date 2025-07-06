@@ -3,7 +3,7 @@ import {UserIcon} from "@sanity/icons";
 
 
 export const userSchema = defineType({
-    name: "user",
+    name: "user-final",
     title: "Users",
     type: "document",
     icon: UserIcon,
@@ -27,6 +27,12 @@ export const userSchema = defineType({
             name: "library",
             type: "array",
             of: [{type: "reference", to: [{type: "pdf"}]}]
+        }),defineField({
+            name: "login_method",
+            type: "string"
+        }),defineField({
+            name: "password",
+            type: "string"
         })
     ]
 })

@@ -1,8 +1,6 @@
 "use client"
 
-import React, {Suspense, useState} from 'react';
-import {auth} from "@/auth";
-import {Session} from "@/sanity/schemaTypes/manualTypes.js";
+import React, {useState} from 'react';
 
 const UploadForm = ({id}:{id: string}) => {
     const [file, setFile] = useState<File | null>(null);
@@ -17,7 +15,7 @@ const UploadForm = ({id}:{id: string}) => {
         form.append('file', file);
         form.append("userId", id)
 
-        const res = await fetch('/api/upload', {
+        const res = await fetch('/api/pdf/upload', {
             method: 'POST',
             body: form,
         });

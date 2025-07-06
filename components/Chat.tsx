@@ -42,7 +42,7 @@ export default function Chat({pdfId}: { pdfId: string }) {
         setInput("");
         setIsLoading(true);
 
-        const res = await fetch("/api/chat", {
+        const res = await fetch("/api/pdf/chat", {
             method: "POST",
             body: JSON.stringify({messages: updated, pdfId}),
         });

@@ -6,6 +6,8 @@ import { ChatPromptTemplate, MessagesPlaceholder } from "@langchain/core/prompts
 import { RunnableSequence } from "@langchain/core/runnables";
 import { AIMessage, HumanMessage } from "@langchain/core/messages";
 import {writeClient} from "@/sanity/lib/writeClient";
+import {JinaEmbeddings} from "@langchain/community/embeddings/jina";
+
 
 function cosineSimilarity(a: number[], b: number[]): number {
     const dot = a.reduce((sum, ai, i) => sum + ai * b[i], 0);
@@ -15,15 +17,17 @@ function cosineSimilarity(a: number[], b: number[]): number {
     return dot / (normA * normB);
 }
 const embeddings = new OpenAIEmbeddings();
+// const embeddings = new JinaEmbeddings({model: "jina-clip-v2"})
 const pinecone = new Pinecone();
 const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX!);
+const pc = pineconeIndex.namespace("pdf")
 const llm = new ChatOpenAI({
     model: "gpt-4o-mini",
     streaming: true,
-    temperature: 0.3,
+    temperature: 0.2,
 });
 const prompt = ChatPromptTemplate.fromMessages([
-    ["system", "You're an AI assistant. Only answer within 50 words based on the provided PDF and chat context.\n\n Context: {context} \n\n If unsure, say you don't know but don't give response outside the context or chat history. give in markdown decorated format."],
+    ["system", "You're an AI assistant. Only answer within 50 words based on the provided PDF and chat context.\n\n Context: {context} \n\n If you are unsure or if answering makes you think outside of the context even if it is related to context, say you don't know but don't give response outside the context or chat history. give in markdown decorated format."],
     new MessagesPlaceholder("chat_history"),
     ["human", "{input}"],
 ]);
@@ -32,7 +36,7 @@ const encoder = new TextEncoder();
 async function isContextuallyInChatHistory(
     question: string,
     chatHistory: [string, string][],
-    embedder: OpenAIEmbeddings
+    embedder: OpenAIEmbeddings | JinaEmbeddings,
 ): Promise<boolean> {
     const questionEmbedding = await embedder.embedQuery(question);
     for (const [pastQuestion] of chatHistory) {
@@ -62,7 +66,7 @@ export async function POST(req: NextRequest) {
         }
     }
 
-    const allResults = await pineconeIndex.query({
+    const allResults = await pc.query({
         topK: 100,
         vector: await embeddings.embedQuery(question),
         filter: { pdfId },
@@ -87,7 +91,7 @@ export async function POST(req: NextRequest) {
             ? top4Scores.reduce((sum, s) => sum + s, 0) / top4Scores.length
             : 0;
     console.log("Similarity Score with PDF: " + avgTop4Score);
-    const isRelevantToPDF = avgTop4Score >= 0.75;
+    const isRelevantToPDF = avgTop4Score >= 0.70;
     const isRelevantToChat = await isContextuallyInChatHistory(question, chatHistory, embeddings);
 
     if (!isRelevantToPDF && !isRelevantToChat) {
@@ -143,7 +147,7 @@ export async function POST(req: NextRequest) {
                             question,
                             answer: answerTokens.join(""),
                             timestamp: new Date().toISOString(),
-                            _key: pdfId + "-" + Date.now() + "-" + Math.random(),
+                            _key: crypto.randomUUID(),
                         }])
                     .commit();
             } catch (err) {

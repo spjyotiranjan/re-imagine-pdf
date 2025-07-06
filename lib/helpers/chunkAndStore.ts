@@ -48,6 +48,7 @@ export const chunkAndStorePdfWithPageIntelligence = async ({
 
     // Store to Pinecone
     await PineconeStore.fromDocuments(finalDocs, new OpenAIEmbeddings(), {
+        namespace: "pdf",
         pineconeIndex: index,
     });
 

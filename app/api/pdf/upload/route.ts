@@ -1,7 +1,5 @@
 import {NextResponse} from "next/server";
-import {client} from "@/sanity/lib/client";
 import {writeClient} from "@/sanity/lib/writeClient";
-import {USER_BY_ID_QUERY} from "@/sanity/lib/query";
 import {chunkAndStorePdfWithPageIntelligence} from "@/lib/helpers/chunkAndStore";
 
 
