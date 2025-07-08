@@ -28,7 +28,7 @@ const PDFViewer = ({pdfId}: { pdfId: string }) => {
                 {
                     path: '/webviewer/lib',
                     initialDoc: pdf?.url as string,
-                    licenseKey: 'b2giu8H4aYanpkglo70r',
+                    licenseKey: process.env.NEXT_PUBLIC_PDFTRON_LICENSE_KEY as string,
                     isReadOnly: false,
                 },
                 viewer.current,
