@@ -15,7 +15,6 @@ export default function Chat({pdfId}: { pdfId: string }) {
     useEffect(() => {
         async function fetchChatHistory() {
             const result= await client.fetch(PDF_CHATHISTORY_BY_ID_QUERY, {pdfId});
-            console.log(result)
             const history = result?.chatHistory || [];
             const formatted = history.flatMap((item : any) => [
                 {role: "user", content: item.question},
@@ -57,7 +56,7 @@ export default function Chat({pdfId}: { pdfId: string }) {
             const {done, value} = await reader.read();
             if (done) break;
             assistantMessage += decoder.decode(value);
-            setMessages((msgs) => [
+            setMessages(() => [
                 ...updated,
                 {role: "assistant", content: assistantMessage},
             ]);
@@ -67,7 +66,7 @@ export default function Chat({pdfId}: { pdfId: string }) {
     }
 
     return (
-        <div className="flex flex-col h-screen max-w-2xl mx-auto p-4">
+        <div className="flex flex-col h-[85vh] max-w-2xl w-full mx-auto p-4">
             <div className="flex-1 overflow-y-auto space-y-4">
                 {messages.map((m, i) => (
                     <div key={i}
@@ -83,10 +82,10 @@ export default function Chat({pdfId}: { pdfId: string }) {
                 <div ref={bottomRef}/>
             </div>
 
-            <form onSubmit={handleSubmit} className="mt-4 flex gap-2">
+            <form onSubmit={handleSubmit} className="mt-4 flex gap-2 sticky bottom-0 gray-container p-3">
                 <input
                     type="text"
-                    className="flex-1 border rounded p-2"
+                    className="flex-1 border rounded p-2 bg-white"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask your PDF..."
