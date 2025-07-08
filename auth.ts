@@ -93,10 +93,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
         },
 
         async jwt ({token,account,profile,user}) : Promise<JWT>{
-            console.log(token)
-            console.log(account)
-            console.log(profile)
-            console.log(user)
             let updatedToken = token as JWT
             if(account && account.provider === "credentials"){
                 const userObtained = await client.fetch(USER_BY_AUTH_ID_QUERY,{id: user?.id as string})
@@ -110,10 +106,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
         },
 
         async session({session, token}): Promise<Session> {
-            // const currentDate = new Date();
-            // const futureDate = new Date(currentDate.getTime() + (10 * 24 * 60 * 60 * 1000));
-            // const isoDateString = futureDate.toISOString();
-            // console.log(isoDateString);
             return {
                 ...session, id: token.id as string
             }
