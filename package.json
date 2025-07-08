@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "predev": "npm run typegen && npm run webviewerinitialize",
-    "prebuild": "npm run typegen",
+    "prebuild": "npm run typegen && npm run webviewerinitialize",
     "typegen": "sanity schema extract --path=./sanity/extract.json && sanity typegen generate",
     "webviewerinitialize": "node scripts/WebViewerCodeCopy.js"
   },
