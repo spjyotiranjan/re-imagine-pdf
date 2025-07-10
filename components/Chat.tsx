@@ -1,30 +1,19 @@
 "use client"
 
 import {useEffect, useRef, useState} from "react";
-import {client} from "@/sanity/lib/client";
-import {PDF_CHATHISTORY_BY_ID_QUERY} from "@/sanity/lib/query";
 import Markdown from 'react-markdown'
 import remarkGfm from "remark-gfm";
 
-export default function Chat({pdfId}: { pdfId: string }) {
+export default function Chat({history,pdfId}: {pdfId: string, history: [{ role: string; content: string }] }) {
     const [messages, setMessages] = useState<{ role: string; content: string }[]>([]);
     const [input, setInput] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const bottomRef = useRef<HTMLDivElement | null>(null);
-
     useEffect(() => {
-        async function fetchChatHistory() {
-            const result= await client.fetch(PDF_CHATHISTORY_BY_ID_QUERY, {pdfId});
-            const history = result?.chatHistory || [];
-            const formatted = history.flatMap((item : any) => [
-                {role: "user", content: item.question},
-                {role: "assistant", content: item.answer},
-            ]);
-            setMessages(formatted);
+        if(history){
+            setMessages(history)
         }
-
-        fetchChatHistory();
-    }, [pdfId]);
+    }, [history]);
 
 
     useEffect(() => {
@@ -66,19 +55,19 @@ export default function Chat({pdfId}: { pdfId: string }) {
     }
 
     return (
-        <div className="flex flex-col h-[85vh] max-w-2xl w-full mx-auto p-4">
+        <div className="flex flex-col h-[85vh] mx-auto p-4">
             <div className="flex-1 overflow-y-auto space-y-4">
                 {messages.map((m, i) => (
                     <div key={i}
-                         className={`p-3 rounded-md ${m.role === "user" ? "bg-blue-100 text-blue-800 self-end" : "bg-gray-100 text-gray-800 self-start"}`}>
+                         className={`p-3 max-w-[85%] w-fit  rounded-md ${m.role === "user" ? "bg-blue-100 text-blue-800 mr-auto" : "bg-gray-100 text-gray-800 ml-auto"}`}>
                         {m.role === "assistant" ? (
-                            <Markdown remarkPlugins={[remarkGfm]}>{m.content}</Markdown>
+                            <Markdown  remarkPlugins={[remarkGfm]}>{m.content}</Markdown>
                         ) : (
                             m.content
                         )}
                     </div>
                 ))}
-                {isLoading && <div className="italic text-gray-400">Thinking...</div>}
+                {isLoading && <div className="italic w-fit ml-auto text-gray-400">Thinking...</div>}
                 <div ref={bottomRef}/>
             </div>
 
