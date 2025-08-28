@@ -4,7 +4,6 @@ import PDFDeleteIcon from "@/components/PDFDeleteIcon";
 import UploadForm from "@/components/uploadForm";
 import {Session} from "@/sanity/schemaTypes/manualTypes.js";
 import {auth} from "@/auth";
-import {client} from "@/sanity/lib/client";
 import {USER_BY_ID_QUERY} from "@/sanity/lib/query";
 import {sanityFetch, SanityLive} from "@/sanity/lib/live";
 
