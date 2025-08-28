@@ -13,7 +13,7 @@ export async function DELETE(req: NextRequest, {params}: { params: Promise<{ pdf
     try {
         const { matches } = await pc.query({
             topK: 10000,
-            vector: Array(1024).fill(0),
+            vector: Array(1536).fill(0),
             filter: { pdfId },
             includeMetadata: false,
         });

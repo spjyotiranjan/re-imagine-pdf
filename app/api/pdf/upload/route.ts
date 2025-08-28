@@ -37,6 +37,11 @@ export async function POST(req: Request) {
         chatHistory: []
     });
 
+    const result = await chunkAndStorePdfWithPageIntelligence({
+        file,
+        sanityId: doc._id,
+        pineconeIndexName: process.env.PINECONE_INDEX!,
+    });
 
     await writeClient.patch(userId).append("library", [
         {
@@ -46,11 +51,6 @@ export async function POST(req: Request) {
         }
     ]).commit()
 
-    const result = await chunkAndStorePdfWithPageIntelligence({
-        file,
-        sanityId: doc._id,
-        pineconeIndexName: process.env.PINECONE_INDEX!,
-    });
 
 
     return NextResponse.json({ storedChunks:result,sanityId: doc._id });
