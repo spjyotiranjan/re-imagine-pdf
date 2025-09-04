@@ -2,6 +2,11 @@ import {auth} from "@/auth";
 import {Session} from "@/sanity/schemaTypes/manualTypes.js";
 import PDFCatalogView from "@/components/PDFCatalogView";
 
+export const metadata = {
+    title: 'Home - PDF Buddy',
+    description: 'Welcome to the home page of my awesome website',
+};
+
 export default async function Home() {
     const session: Session = await auth() as Session;
     console.log(session)

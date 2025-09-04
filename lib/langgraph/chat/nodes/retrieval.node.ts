@@ -7,13 +7,14 @@ const vectorService = new VectorService();
 const embeddingsService = new EmbeddingsService();
 
 export async function retrieveContextNode(state: AgentState): Promise<Partial<AgentState>> {
-    const { question, pdfId } = state;
+    const { question, pdfId, pageNum } = state;
 
     const queryVector = await embeddingsService.embedQuery(question);
     const { documents, avgScore } = await vectorService.retrieveDocuments(
         queryVector,
         pdfId,
-        chatConfig.topK
+        chatConfig.topK,
+        pageNum
     );
 
     const context = documents.map(doc => doc.pageContent).join('\n\n');

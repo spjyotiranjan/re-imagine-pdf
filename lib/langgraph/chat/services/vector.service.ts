@@ -16,14 +16,27 @@ export class VectorService {
     async retrieveDocuments(
         query: number[],
         pdfId: string,
-        topK: number = 10
+        topK: number = 10,
+        pageNum: number
     ): Promise<{ documents: DocumentType[]; avgScore: number }> {
-        const results = await this.namespace.query({
-            topK,
-            vector: query,
-            filter: { pdfId },
-            includeMetadata: true
-        });
+        let results;
+        console.log(pageNum)
+
+        if(pageNum === 0){
+            results = await this.namespace.query({
+                topK,
+                vector: query,
+                filter: { pdfId },
+                includeMetadata: true
+            });
+        }else{
+            results = await this.namespace.query({
+                topK,
+                vector: query,
+                filter: { pdfId, pageNum },
+                includeMetadata: true
+            })
+        }
 
         const documents = results.matches.map((match: any) => ({
             pageContent: match.metadata?.text || "",
@@ -40,6 +53,8 @@ export class VectorService {
 
         const avgScore = calculateAverageScore(top4Scores);
         console.log(`Similarity Score with PDF: ${avgScore}`);
+        console.log(documents);
+
 
         return { documents, avgScore };
     }

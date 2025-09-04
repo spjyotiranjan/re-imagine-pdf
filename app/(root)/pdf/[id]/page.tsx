@@ -39,6 +39,7 @@ const PDFView = () => {
                 {role: "assistant", content: item.answer},
             ]);
             setPdf({asset: result?.file?.asset as Asset, history: formatted as [HistoryUnit]})
+            document.title = result?.file?.asset?.originalFilename as string
         }
 
         fetchChatHistory();

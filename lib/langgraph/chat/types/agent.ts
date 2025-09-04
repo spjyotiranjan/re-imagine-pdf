@@ -14,6 +14,7 @@ export interface AgentState {
         pdfScore: number;
         chatScore: number;
     };
+    pageNum: number;
 }
 
 export interface DocumentType {

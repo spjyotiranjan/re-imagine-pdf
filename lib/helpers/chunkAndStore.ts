@@ -5,7 +5,7 @@ import {PineconeStore} from "@langchain/pinecone";
 import { Pinecone } from "@pinecone-database/pinecone";
 import { Document } from "langchain/document";
 
-export const chunkAndStorePdfWithPageIntelligence = async ({
+export const    chunkAndStorePdfWithPageIntelligence = async ({
                                                                file,
                                                                sanityId,
                                                                pineconeIndexName,
@@ -35,7 +35,7 @@ export const chunkAndStorePdfWithPageIntelligence = async ({
             (chunk) =>
                 new Document({
                     pageContent: `Content from Page ${pageNumber}:\n\n${chunk.pageContent}`,
-                    metadata: { pdfId: sanityId,text: `Content from Page ${pageNumber}:\n\n${chunk.pageContent}` },
+                    metadata: { pdfId: sanityId,text: `Content from Page ${pageNumber}:\n\n${chunk.pageContent}`, pageNum: pageNumber },
                 })
         );
 

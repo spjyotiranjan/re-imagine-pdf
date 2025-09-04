@@ -6,5 +6,5 @@ export const chatConfig: ChatConfig = {
     maxTokens: 1000,
     topK: 10,
     similarityThreshold: 0.70,
-    maxResponseWords: 50,
+    maxResponseWords: 150,
 };

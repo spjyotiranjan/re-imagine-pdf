@@ -48,6 +48,10 @@ const AgentStateAnnotation = Annotation.Root({
         reducer: (x, y) => ({ ...x, ...y }),
         default: () => ({ pdfScore: 0, chatScore: 0 }),
     }),
+    pageNum: Annotation<number>({
+        reducer: (x, y) => y ?? x,
+        default: () => 0,
+    })
 })
 
 function shouldContinue(state: AgentState): string {
